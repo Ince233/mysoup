@@ -1,0 +1,79 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/discover/discover",
+			"style": {
+				"navigationBarTitleText": "发现"
+			}
+		},
+		{
+			"path": "pages/play/play",
+			"style": {
+				"navigationBarTitleText": "一起玩"
+			}
+		},
+		{
+			"path": "pages/ai/ai",
+			"style": {
+				"navigationBarTitleText": "趣味AI"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path" : "pages/search/search",
+			"style" : 
+			{
+				"navigationBarTitleText" : "搜索页面"
+			}
+		},
+		{
+			"path" : "pages/soupDetail/soupDetail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "海龟汤详情页"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#9799a5",
+		"selectedColor": "$brand-theme-color",
+		"list": [
+			{
+				"text": "发现",
+				"pagePath": "pages/discover/discover",
+				"iconPath": "/static/images/tabBar/home.png",
+				"selectedIconPath": "/static/images/tabBar/home-h.png"
+			},
+			{
+				"text": "一起玩",
+				"pagePath": "pages/play/play",
+				"iconPath": "/static/images/tabBar/classify.png",
+				"selectedIconPath": "/static/images/tabBar/classify-h.png"
+			},
+			{
+				"text": "趣味AI",
+				"pagePath": "pages/ai/ai",
+				"iconPath": "/static/images/tabBar/classify.png",
+				"selectedIconPath": "/static/images/tabBar/classify-h.png"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/user/user",
+				"iconPath": "/static/images/tabBar/user.png",
+				"selectedIconPath": "/static/images/tabBar/user-h.png"
+			}
+		]
+	},
+	"uniIdRouter": {}
+}
