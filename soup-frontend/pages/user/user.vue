@@ -166,83 +166,152 @@ const handleClick = ()=>{
 </script>
 
 <style lang="scss" scoped>
-	.userInfo{
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		justify-content:center;
-		width:100%;
-		padding:40rpx 0;
-		.avatar{
-			width:100%;
-			margin-bottom:20rpx;
-			display:flex;
-			align-items:center;
-			justify-content:center;
-			image{
-				border-radius:80rpx;
-				width:160rpx;
-				height:160rpx;
-			}
+.userInfo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 60rpx 0 50rpx;
+	margin-bottom: 20rpx;
+	
+	.avatar {
+		width: 160rpx;
+		height: 160rpx;
+		margin-bottom: 28rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 248, 255, 0.9));
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+		transition: all 0.4s ease;
+		cursor: pointer;
+		
+		&:hover {
+			transform: scale(1.05);
+			box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.2);
 		}
-		.ip{
-			font-size:44rpx;
-			color:$text-color-1;
-			padding:20rpx 0 5rpx;
-		}
-		.address{
-			font-size:28rpx;
-			color:$text-color-2;
-		}
-	}
-	.section{
-		border:1px solid #eee;
-		border-radius:10rpx;
-		box-shadow: 0 0 3px 1px rgba(0,0,0,0.08);
-		width:690rpx;
-		margin: 50rpx auto;
-		.list{
-			.row{
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 0 30rpx;
-				height:100rpx;
-				background-color: #fff;
-				position: relative;
-				&last-child{
-					border-bottom:0;
-				}
-				.left{
-					display:flex;
-					align-items:center;
-					:deep(){
-						.uni-icons{
-							color:$brand-theme-color !important;
-						}
-					}
-					.text{
-						color:$text-color-1;
-						padding-left:10rpx;
-					}
-				}
-				.right{
-					display:flex;
-					align-items:center;
-					.text{
-						color:#aaa;
-					}
-				}
-				button{
-					position: absolute;
-					top: 0;
-					left: 0;
-					height: 100rpx;
-					width: 100%;
-					opacity:0;
-				}
-			}
+		
+		image {
+			border-radius: 50%;
+			width: 152rpx;
+			height: 152rpx;
 		}
 	}
+	
+	.ip {
+		font-size: 44rpx;
+		font-weight: 600;
+		color: #333;
+		padding: 10rpx 0;
+		letter-spacing: 1rpx;
+	}
+	
+	.address {
+		font-size: 28rpx;
+		color: #666;
+		margin-top: 8rpx;
+		background: rgba(255, 255, 255, 0.7);
+		padding: 8rpx 24rpx;
+		border-radius: 20rpx;
+		backdrop-filter: blur(8px);
+		border: 1rpx solid rgba(255, 255, 255, 0.5);
+	}
+}
 
+.section {
+	margin: 36rpx auto;
+	width: 85vw;
+	border-radius: 24rpx;
+	box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(15px);
+	border: 1rpx solid rgba(255, 255, 255, 0.5);
+	
+	.list {
+		.row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 40rpx;
+			height: 110rpx;
+			position: relative;
+			transition: all 0.3s ease;
+			cursor: pointer;
+			
+			&:hover {
+				background: rgba(255, 255, 255, 0.95);
+				transform: translateX(4rpx);
+			}
+			
+			&:not(:last-child)::after {
+				content: '';
+				position: absolute;
+				left: 40rpx;
+				right: 40rpx;
+				bottom: 0;
+				height: 1rpx;
+				background: linear-gradient(to right, transparent, rgba(200, 200, 200, 0.3), transparent);
+			}
+			
+			.left {
+				display: flex;
+				align-items: center;
+				
+				:deep() {
+					.uni-icons {
+						color: #666 !important;
+						font-size: 36rpx !important;
+						margin-right: 24rpx;
+					}
+				}
+				
+				.text {
+					color: #333;
+					font-size: 32rpx;
+					font-weight: 500;
+				}
+			}
+			
+			.right {
+				display: flex;
+				align-items: center;
+				gap: 16rpx;
+				
+				.text {
+					color: #999;
+					font-size: 28rpx;
+				}
+				
+				:deep() {
+					.uni-icons {
+						color: #ccc !important;
+						font-size: 20rpx !important;
+					}
+				}
+			}
+			
+			button {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				opacity: 0;
+			}
+		}
+	}
+}
+
+/* 为第一个section添加特殊样式 */
+.section:first-of-type {
+	margin-top: 0;
+}
+
+/* 为最后一个section添加特殊样式 */
+.section:last-of-type {
+	margin-bottom: 60rpx;
+}
 </style>

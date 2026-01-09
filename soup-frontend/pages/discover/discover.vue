@@ -15,7 +15,12 @@
 		<view class="classify">
 			<view class="title">专题分类</view>
 			<view class="content">
-				<view class="classes"  v-for="(item, index) in iconTextList" :key="index">
+				<view
+					class="classes"
+					v-for="(item, index) in iconTextList"
+					:key="index"
+					@click="updateList(item.text)"
+				>
 					<view class="icon">
 						<uni-icons :type="item.icon" size="30" color="$text-color-1"></uni-icons>
 					</view>
@@ -42,8 +47,14 @@
 		</view>
 		<view class="recommend">
 			<view class="title">每日推荐</view>
-			<view class="list" v-for="(item, index) in randomSoup" :key="item.id">
-				<uni-card @click="goToDetail(item.id)":title="item.title" :extra="item.tag" :is-shadow="true" shadow="0px 0px 3px 1px rgba(0, 0, 0, 0.08)">
+			<view class="list" v-for="(item, index) in thisSoupList" :key="item.id">
+				<uni-card
+					@click="goToDetail(item.id)"
+					:title="item.title"
+					:extra="item.tag"
+					:is-shadow="true"
+					shadow="0px 0px 3px 1px rgba(0, 0, 0, 0.08)"
+				>
 					<text class="uni-body">{{ item.riddle }}</text>
 				</uni-card>
 			</view>
@@ -52,19 +63,32 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import soupList from '@/static/soupText/soupInfo.json'
 
-//获取本地海龟汤
-//console.log(soupList)  // 你可以直接使用这个对象
-let randomSoup = ref([])
-for(let i = 0 ; i < 8; i++){
-	let randomIndex = Math.floor(Math.random()*24)
-	if(!randomSoup.value.includes(soupList[randomIndex])){
-		randomSoup.value.push(soupList[randomIndex])
+// 当前展示的汤列表
+const thisSoupList = ref([])
+
+// 初始化：随机推荐 5 道汤
+const initRandomSoupList = () => {
+	const usedIndex = new Set()
+	const result = []
+	const total = soupList.length
+
+	while (result.length < 5 && usedIndex.size < total) {
+		const randomIndex = Math.floor(Math.random() * total)
+		if (!usedIndex.has(randomIndex)) {
+			usedIndex.add(randomIndex)
+			result.push(soupList[randomIndex])
+		}
 	}
+
+	thisSoupList.value = result
 }
-//console.log(randomSoup)
+
+onBeforeMount(() => {
+	initRandomSoupList()
+})
 //分类板块图标
 const iconTextList = [
       { icon: 'color-filled', text: '入门' },
@@ -82,124 +106,237 @@ const goToDetail = (id) => {
 		url:'/pages/soupDetail/soupDetail?id=' + id
 	})
 }
+//根据分类更新展示列表
+//thisSoupList
+
+const _deprecatedUpdateList = ()  => {
+	
+	soupList
+	thisSoupList = updatedList
+}
+
+// 根据分类更新展示列表（点击分类时触发）
+const updateList = (category)  => {
+	// 按 tag 精确匹配分类
+	const filtered = soupList.filter(item => item.tag === category)
+
+	// 如果该分类下数量很多，只取前 5 条
+	if (filtered.length > 0) {
+		thisSoupList.value = filtered.slice(0, 5)
+	} else {
+		// 如果没有匹配结果，回退到随机推荐
+		initRandomSoupList()
+	}
+}
 </script>
 
 <style lang="scss" scoped>
 .discoverLayout{
-	overflow:hidden;//解决外边距塌陷
+	padding-bottom: 40rpx;
+	
 	.search{
-		margin: 40rpx auto;
-		margin-bottom:0;
-		width: 85vw;
+		margin: 40rpx auto 20rpx;
+		width: 88vw;
 		height:100rpx;
 		border-radius:50rpx;
-		border: 1rpx solid #a6a6a6;
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
 		display:flex;
 		justify-content:center;
 		align-items:center;
-		background-color: #fff;
-		opacity:0.8;
+		box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		
+		&:hover {
+			box-shadow: 0 6rpx 25rpx rgba(0, 0, 0, 0.15);
+		}
+		
 		.searchBox{
 			display:flex;
 			justify-content: center;
 			align-items:center;
+			text-decoration: none;
+			
 			.text{
-				color:$text-color-2;
-				padding-left:20rpx;
+				color:#666;
+				padding-left:16rpx;
+				font-size: 32rpx;
 			}
 		}
 	}
+	
 	.classify{
 		display:flex;
 		flex-direction:column;
-		padding:20rpx 40rpx;
-		margin-bottom:20rpx;
+		padding:0 40rpx 20rpx;
+		
 		.title{
-			font-size:35rpx;
-			margin:30rpx auto;
-			color:$text-color-1;
+			font-size:38rpx;
+			font-weight: 600;
+			margin:30rpx 0;
+			color:#333;
+			padding-left:10rpx;
+			border-left: 6rpx solid #a0c6c5;
 		}
+		
 		.content{
 			display:grid;
 			grid-template-columns: repeat(4,1fr);
-			gap:40rpx;
+			gap:24rpx;
+			
 			.classes{
 				display:flex;
 				flex-direction:column;
 				align-items:center;
-				justify-content: space-between;
+				justify-content: center;
+				padding:20rpx 10rpx;
+				border-radius:16rpx;
+				background: rgba(255, 255, 255, 0.85);
+				backdrop-filter: blur(5px);
+				transition: all 0.3s ease;
+				cursor: pointer;
+				
+				&:hover {
+					transform: translateY(-4rpx);
+					box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.12);
+				}
+				
 				:deep(){
 					.uni-icons {
-						color:$text-color-1 !important;
+						color:#a0c6c5 !important;
+						font-weight: bold;
 					}
 				}
+				
 				.text{
-					padding-top:15rpx;
-					color:$text-color-1;
+					padding-top:12rpx;
+					color:#444;
+					font-size: 28rpx;
+					font-weight: 500;
 				}
 			}
 		}
 	}
+	
 	.notice{
-		width: 85vw;
-		height: 80rpx;
-		line-height:80rpx;
-		background: #fff;
-		opacity: 0.8;
-		margin: 0 auto;
-		border: 1rpx solid #a6a6a6;
-		border-radius: 40rpx;
+		width: 88vw;
+		height: 90rpx;
+		line-height:90rpx;
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
+		margin: 0 auto 30rpx;
+		border-radius: 45rpx;
 		display:flex;
+		align-items: center;
+		box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.08);
+		
 		.left{
-			width:140rpx;
+			width:120rpx;
 			display:flex;
 			align-items:center;
 			justify-content:center;
+			
 			:deep(){
 				.uni-icons{
-					color:$brand-theme-color !important;
+					color:#d1e4a3 !important;
+					font-weight: bold;
 				}
 			}
+			
 			.text{
-				color:$text-color-1;
+				color:#333;
 				font-weight:bold;
-				font-size:28rpx;
+				font-size:30rpx;
+				margin-left:8rpx;
 			}
-	
 		}
+		
 		.center{
 			flex:1;
 			swiper{
 				height:100%;
+				
 				&-item{
 					height:100%;
-					font-size: 30rpx;
-					color:$text-color-2;
+					font-size: 32rpx;
+					color:#666;
 					overflow:hidden;
 					white-space:nowrap;
 					text-overflow:ellipsis;
 				}
 			}
 		}
+		
 		.right{
-			width:70rpx;
+			width:60rpx;
 			display:flex;
 			align-items:center;
 			justify-content:center;
+			
+			:deep() {
+				.uni-icons {
+					color:#ccc;
+				}
+			}
 		}
 	}
+	
 	.recommend{
 		display:flex;
 		flex-direction:column;
-		padding:20rpx 40rpx;
+		padding:0 40rpx;
+		
 		.title{
-			font-size:35rpx;
-			margin:30rpx auto;
-			color:$text-color-1;
+			font-size:38rpx;
+			font-weight: 600;
+			margin:0 0 20rpx;
+			color:#333;
+			padding-left:10rpx;
+			border-left: 6rpx solid #d1e4a3;
 		}
+		
 		:deep(){
-			.unicard{
-				background-color: #a0c6c5 !important;//没起作用
+			.uni-card {
+				margin-bottom: 24rpx;
+				border-radius: 20rpx;
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(10px);
+				box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.08);
+				transition: all 0.3s ease;
+				
+				&:hover {
+					transform: translateY(-2rpx);
+					box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.12);
+				}
+				
+				.uni-card__header {
+					border-bottom: 2rpx solid #f0f0f0;
+					padding: 24rpx 30rpx;
+					
+					.uni-card__title {
+						font-size: 34rpx;
+						font-weight: 600;
+						color: #333;
+					}
+					
+					.uni-card__extra {
+						font-size: 26rpx;
+						color: #a0c6c5;
+						background: rgba(160, 198, 197, 0.1);
+						padding: 4rpx 16rpx;
+						border-radius: 12rpx;
+					}
+				}
+				
+				.uni-card__content {
+					padding: 30rpx;
+					
+					.uni-body {
+						font-size: 30rpx;
+						color: #666;
+						line-height: 1.6;
+					}
+				}
 			}
 		}
 	}

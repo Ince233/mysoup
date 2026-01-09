@@ -40,54 +40,143 @@
 </script>
 
 <style lang="scss" scoped>
-@mixin button($thisWidth){
-	margin:auto;
-	width:$thisWidth;
-	height:100rpx;
-	display:flex;
+@mixin button($thisWidth, $bgColor: rgba(255, 255, 255, 0.9)) {
+	margin: auto;
+	width: $thisWidth;
+	height: 100rpx;
+	display: flex;
 	justify-content: center;
-	align-items:center;
-	background-color: #fff;
-	border-radius:50rpx;
-	opacity: 0.8;
-	border: 1rpx solid #a6a6a6;
-	.text{
-		padding-left:20rpx;
+	align-items: center;
+	background-color: $bgColor;
+	border-radius: 50rpx;
+	box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+	backdrop-filter: blur(10px);
+	transition: all 0.3s ease;
+	border: 1rpx solid rgba(255, 255, 255, 0.5);
+	
+	&:hover {
+		transform: translateY(-2rpx);
+		box-shadow: 0 12rpx 28rpx rgba(0, 0, 0, 0.18);
+	}
+	
+	&:active {
+		transform: translateY(0);
+	}
+	
+	.text {
+		padding-left: 20rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333;
+	}
+	
+	.uni-icons {
+		color: #666;
 	}
 }	
-.playLayout{
-	overflow:hidden;
-	display:flex;
-	flex-direction:column;
-	min-height:90vh;
-	.buttonWrapper{
-		height:25vh;
-		display:flex;
+
+.playLayout {
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 20rpx 0;
+	
+	.buttonWrapper {
+		height: 28vh;
+		display: flex;
 		flex-direction: column;
-		.quickPlay{
+		justify-content: center;
+		align-items: center;
+		gap: 30rpx;
+		
+		.quickPlay {
 			@include button(85vw);
+			background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
 		}
-		.createRoom{
+		
+		.createRoom {
 			@include button(85vw);
-			margin-bottom:40rpx;
+			background: linear-gradient(135deg, rgba(248, 249, 250, 0.95), rgba(233, 236, 239, 0.95));
 		}
-		.search{
-			margin:0 30rpx;
-			display:flex;
-			justify-content: center;
-			.searchRoom{
-			@include button(60vw);
+		
+		.search {
+			width: 85vw;
+			display: flex;
+			gap: 20rpx;
+			
+			.searchRoom {
+				@include button(65%);
+				background: rgba(255, 255, 255, 0.9);
+				
+				.uni-icons {
+					color: #999;
+				}
+				
+				.text {
+					color: #999;
+					font-weight: 400;
+				}
 			}
-			.filterButton{
-			@include button(20vw);
+			
+			.filterButton {
+				@include button(25%);
+				background: rgba(255, 255, 255, 0.9);
 			}
 		}
 	}
 
-	.roomList{
-		display:flex;
-		flex-direction:column;
-		padding:20rpx 40rpx;
+	.roomList {
+		display: flex;
+		flex-direction: column;
+		padding: 0 30rpx;
+		gap: 20rpx;
+		
+		.list {
+			:deep() {
+				.uni-card {
+					background: rgba(255, 255, 255, 0.9);
+					backdrop-filter: blur(10px);
+					border-radius: 24rpx;
+					box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+					border: none;
+					transition: all 0.3s ease;
+					
+					&:hover {
+						transform: translateY(-4rpx);
+						box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+					}
+					
+					.uni-card-header {
+						padding: 24rpx 28rpx;
+						border-bottom: 1rpx solid rgba(0, 0, 0, 0.06);
+						
+						.uni-card-header-title {
+							font-size: 34rpx;
+							font-weight: 600;
+							color: #333;
+						}
+						
+						.uni-card-header-extra {
+							font-size: 26rpx;
+							color: #666;
+							background: rgba(240, 240, 240, 0.8);
+							padding: 8rpx 16rpx;
+							border-radius: 16rpx;
+						}
+					}
+					
+					.uni-card-content {
+						padding: 24rpx 28rpx;
+						
+						.uni-body {
+							font-size: 28rpx;
+							color: #666;
+						}
+					}
+				}
+			}
+		}
 	}
-}      
+}
 </style>

@@ -160,64 +160,102 @@
 	flex-direction: column;
 	height: 100%;
 	position: relative;
-
 }
 
 .chat-list {
 	flex: 1;
-
 }
 
 .chat-list-inner {
-	padding: 20rpx 10rpx;
-	padding-bottom: 180rpx;
+	padding: 20rpx 20rpx 180rpx;
 }
 
 .message-item {
-	margin-bottom: 20rpx;
+	margin-bottom: 28rpx;
 	display: flex;
-	align-items: flex-start;
-	padding-right: 20rpx;
+	align-items: flex-end;
 	transform: translateZ(0); /* 开启硬件加速 */
+	
+	&:last-child {
+		margin-bottom: 0;
+	}
 }
 
 .message-item.user {
 	flex-direction: row-reverse;
+	padding-left: 40rpx;
 }
 
 .message-item.assistant {
 	flex-direction: row;
+	padding-right: 40rpx;
 }
 
 .avatar {
 	width: 80rpx;
 	height: 80rpx;
 	border-radius: 50%;
-	margin: 0 10rpx;
+	margin: 0 16rpx;
 	flex-shrink: 0;
+	box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+	transition: transform 0.3s ease;
+	
+	&:hover {
+		transform: scale(1.05);
+	}
 }
 
 .message-content {
-	max-width: calc(85% - 100rpx);
-	padding: 20rpx;
-	border-radius: 10rpx;
+	max-width: calc(85% - 120rpx);
+	padding: 24rpx 32rpx;
 	word-break: break-all;
 	white-space: pre-wrap;
-	line-height: 1.5;
+	line-height: 1.6;
+	font-size: 30rpx;
+	position: relative;
+	
+	&::before {
+		content: '';
+		position: absolute;
+		bottom: 24rpx;
+		width: 0;
+		height: 0;
+		border-style: solid;
+	}
+}
+
+.user .message-content {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+	color: #333;
+	border-radius: 28rpx 8rpx 28rpx 28rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
+	backdrop-filter: blur(10px);
+	border: 1rpx solid rgba(255, 255, 255, 0.5);
+	
+	&::before {
+		right: -20rpx;
+		border-width: 12rpx 0 12rpx 20rpx;
+		border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+	}
+}
+
+.assistant .message-content {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
+	color: #333;
+	border-radius: 8rpx 28rpx 28rpx 28rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
+	backdrop-filter: blur(10px);
+	border: 1rpx solid rgba(255, 255, 255, 0.5);
+	
+	&::before {
+		left: -20rpx;
+		border-width: 12rpx 20rpx 12rpx 0;
+		border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+	}
 }
 
 .message-content text {
 	display: block;
-}
-
-.user .message-content {
-	background-color: $brand-theme-color;
-	color: white;
-}
-
-.assistant .message-content {
-	background-color: white;
-	color: #333;
 }
 
 .input-container {
@@ -225,32 +263,74 @@
 	left: 0;
 	right: 0;
 	bottom: 90rpx;
-	padding: 20rpx;
-	background-color: white;
+	padding: 20rpx 30rpx;
 	display: flex;
 	align-items: center;
-	border-top: 1rpx solid #eee;
 	z-index: 100;
+	
+	&::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(20px);
+		border-top: 1rpx solid rgba(255, 255, 255, 0.5);
+		border-bottom: 1rpx solid rgba(255, 255, 255, 0.5);
+		box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.08);
+		z-index: -1;
+	}
 }
 
 .input-box {
 	flex: 1;
-	height: 80rpx;
-	background-color: #f5f5f5;
-	border-radius: 40rpx;
-	padding: 0 30rpx;
-	margin-right: 20rpx;
+	height: 90rpx;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 45rpx;
+	padding: 0 40rpx;
+	margin-right: 24rpx;
+	font-size: 30rpx;
+	color: #333;
+	border: 1rpx solid rgba(200, 200, 200, 0.3);
+	box-shadow: inset 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+	transition: all 0.3s ease;
+	
+	&:focus {
+		outline: none;
+		border-color: rgba(200, 200, 200, 0.6);
+		box-shadow: inset 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+	}
+	
+	&::placeholder {
+		color: #999;
+		font-size: 28rpx;
+	}
 }
 
 .send-btn {
-	width: 120rpx;
-	height: 80rpx;
-	background-color: $brand-theme-color;
-	color: white;
-	border-radius: 40rpx;
+	width: 130rpx;
+	height: 90rpx;
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
+	color: #333;
+	border-radius: 45rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 28rpx;
+	font-size: 30rpx;
+	font-weight: 500;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
+	border: 1rpx solid rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease;
+	
+	&:hover {
+		transform: translateY(-2rpx);
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.18);
+	}
+	
+	&:active {
+		transform: translateY(0);
+	}
 }
 </style>
