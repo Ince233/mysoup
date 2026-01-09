@@ -2,11 +2,11 @@
 	<view class="userLayout pageBg">
 		<!-- <custom-nav-bar title="我的"></custom-nav-bar> 还未定义-->
 		<view class="userInfo">
-			<view class="avatar">
-				<image src="/static/images/mushroom2.png" mode="aspectFill"></image>
+			<view class="avatar" @click="handleAvatarClick">
+				<image :src="userInfo.avatar || '/static/images/starfish.png'" mode="aspectFill"></image>
 			</view>
-			<view class="ip">100.100.100.100</view>
-			<view class="address">来自：广东</view>
+			<view class="ip">{{ userInfo.username || '点击头像登录' }}</view>
+			<view class="address">来自：{{ userInfo.region || '未知' }}</view>
 		</view>
 		
 				
@@ -103,12 +103,61 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { wechatLogin, getCurrentUser, isLoggedIn } from '../../utils/auth.js'
+
+// 用户信息
+const userInfo = ref({
+	username: '',
+	avatar: '',
+	region: ''
+})
+
+// 页面加载时获取用户信息
+onMounted(() => {
+	loadUserInfo()
+})
+
+// 加载用户信息
+const loadUserInfo = () => {
+	if (isLoggedIn()) {
+		const currentUser = getCurrentUser()
+		if (currentUser) {
+			userInfo.value = {
+				username: currentUser.username || currentUser.nickName || '微信用户',
+				avatar: currentUser.avatar || currentUser.avatarUrl || '',
+				region: currentUser.region || ''
+			}
+		}
+	}
+}
+
+// 点击头像处理函数
+const handleAvatarClick = async () => {
+	try {
+		// 调用微信登录
+		await wechatLogin()
+		// 更新用户信息
+		loadUserInfo()
+		uni.showToast({
+			title: '登录成功',
+			icon: 'success'
+		})
+	} catch (error) {
+		console.error('登录失败:', error)
+		uni.showToast({
+			title: '登录失败',
+			icon: 'error'
+		})
+	}
+}
+
 const clickContact = ()=>{
-	uni.makePhoneCall(
-	{
+	uni.makePhoneCall({
 		phoneNumber:"18802245526"
 	})
 }
+
 const handleClick = ()=>{
 	uni.navigateTo({
 		url:"/pages/classlist/classlist"

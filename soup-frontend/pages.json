@@ -47,7 +47,7 @@
 	},
 	"tabBar": {
 		"color": "#9799a5",
-		"selectedColor": "$brand-theme-color",
+		"selectedColor": "#a0c6c5",
 		"list": [
 			{
 				"text": "发现",

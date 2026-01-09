@@ -1,0 +1,1 @@
+开虚拟环境，降级python版本为3.12，才能成功支持langchain_core的pydantic

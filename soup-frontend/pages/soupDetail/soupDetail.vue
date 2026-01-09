@@ -3,7 +3,7 @@
 		<view class="head">
 			<!-- 这里展示头像，用户名和标题 -->
 			<view class="avatar">
-				<image src="/static/images/mushroom.png" mode="aspectFit"></image>
+				<image src="/static/images/crab.png" mode="aspectFit"></image>
 				<view class="userInfo">
 					<view class="userName">测试用户1</view>
 					<view class="userId">uid:000001</view>

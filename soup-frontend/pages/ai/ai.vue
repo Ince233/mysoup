@@ -12,7 +12,7 @@
 				<view class="chat-list-inner">
 					<view v-for="(message, index) in messages" :key="index" class="message-item" :class="message.role">
 						<image 
-							:src="message.role === 'assistant' ? '/static/images/mushroom.png' : '/static/images/mushroom.png'"
+							:src="message.role === 'assistant' ? '/static/images/turtle.png' : '/static/images/jellyfish.png'"
 							class="avatar"
 							mode="aspectFill"
 						/>
